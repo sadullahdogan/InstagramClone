@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    .circular--square {
+        border-radius: 50%;
+        width: 500px;
+        height: 500px;
+    }
+
+        .circular--square:hover {
+            border-radius: 0%;
+            width: 800px;
+            height: 800px;
+            float: left;
+        }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            @foreach (var item in ViewBag.Posts)
+            {
+
+                <div class="card">
+                    <div class="card-body">
+                        <h2>@item.User.Name @item.User.Surname</h2>
+                        <img class="circular--square" src="~/Images/@item.Image.ImageName" />
+                        <br />
+                        <p>@item.PostText</p>
+
+                        <br />
+                        <p>@item.LikeCount</p>
+
+                        @if (((List<int>)ViewBag.LikedPosts).Contains(item.Id))
+                        {
+                            using (Html.BeginForm("Dislike", "Home", FormMethod.Post))
+                            {
+                                <input type="hidden" name="postId" id="postId" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger">Dislike</button>
+                            }
+                        }
+                        else
+                        {
+                            using (Html.BeginForm("Like", "Home", FormMethod.Post))
+                            {
+                                <input type="hidden" name="postId" id="postId" value="@item.Id" />
+                                <button type="submit" class="btn btn-success">Like</button>
+                            }
+                        }
+                        @if (((int)Session["User"]) == item.User.ID)
+                        {
+                            using (Html.BeginForm("EditPost", "Home", FormMethod.Get))
+                            {
+                                <input type="hidden" name="postId" id="postId" value="@item.Id" />
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                            }
+                        }
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

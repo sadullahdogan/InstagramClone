@@ -1,0 +1,51 @@
+﻿@model IEnumerable<InstagramClone.Models.User>
+
+@{
+    ViewBag.Title = "ListOtherUsers";
+}
+
+<h2>ListOtherUsers</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Resim")
+        </th>
+        <th>
+            @Html.DisplayName("Kişi")
+        </th>
+        <th>
+            
+        </th>
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+            <img  style="width:40px;height:40px;"src="~/Images/@item.Image.ImageName" alt="Img Did Not Found" />
+        </td>
+        <td>
+           
+            <a href="/Home/ShowProfile/@item.ID">@item.Name @item.Surname</a>
+        </td>
+       
+        <td>
+            @if (!((List<int>)ViewBag.followingList).Contains(item.ID))
+            {
+                @Html.ActionLink("Follow", "Follow", "Home", new { id = item.ID }, new { @class = "btn btn-succes" });
+            }
+            else { 
+
+                @Html.ActionLink("Unfollow", "Unfollow", "Home", new { id = item.ID }, new { @class = "btn btn-danger" });
+            
+            }
+
+
+        </td>
+    </tr>
+}
+
+</table>
